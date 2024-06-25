@@ -87,7 +87,7 @@ export default function App() {
       try {
         data = await fetch_start_agent(`${serverUrl}create_room`, serverAuth);
         if (data && !data.errror) {
-          fetch(`${serverUrl}main`, {
+          fetch(`${serverUrl}start_bot`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
