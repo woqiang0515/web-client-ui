@@ -35,6 +35,7 @@ const status_text = {
 
 // Server URL (ensure trailing slash)
 let serverUrl = import.meta.env.VITE_SERVER_URL;
+let serverAuth = import.meta.env.VITE_SERVER_AUTH;
 if (serverUrl && !serverUrl.endsWith("/")) serverUrl += "/";
 
 // Auto room creation (requires server URL)
@@ -43,7 +44,7 @@ const autoRoomCreation = import.meta.env.VITE_MANUAL_ROOM_ENTRY ? false : true;
 // Query string for room URL
 const roomQs = new URLSearchParams(window.location.search).get("room_url");
 const checkRoomUrl = (url: string | null): boolean =>
-  !!(url && /^(https?:\/\/[^.]+(\.staging)?\.daily\.co\/[^/]+)$/.test(url));
+  !!(url && /^(https?:\/\/[^.]+\.daily\.co\/[^/]+)$/.test(url));
 
 // Show config options
 const showConfigOptions = import.meta.env.VITE_SHOW_CONFIG;
@@ -84,8 +85,22 @@ export default function App() {
       setState("requesting_agent");
 
       try {
-        data = await fetch_start_agent(roomUrl, serverUrl);
-
+        data = await fetch_start_agent(`${serverUrl}create_room`, serverAuth);
+        if (data && !data.errror) {
+          fetch(`${serverUrl}main`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverAuth}`
+            },
+            body: JSON.stringify({
+              room_url: data.result.url,
+              token: data.result.token
+            })
+          }).catch((e) => {
+            console.error(`Failed to make request to ${serverUrl}/main: ${e}`);
+          });
+        }
         if (data.error) {
           setError(data.detail);
           setState("error");
@@ -103,8 +118,8 @@ export default function App() {
 
     try {
       await daily.join({
-        url: data?.room_url || roomUrl,
-        token: data?.token || "",
+        url: data.result.url || roomUrl,
+        token: data.result.token || "",
         videoSource: false,
         startAudioOff: startAudioOff,
       });

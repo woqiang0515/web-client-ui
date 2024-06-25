@@ -1,13 +1,15 @@
 export const fetch_start_agent = async (
-  roomUrl: string | null,
-  serverUrl: string
+  serverUrl: string,
+  serverAuth: string | null
 ) => {
+  console.log(serverUrl)
   const req = await fetch(`${serverUrl}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${serverAuth}`
     },
-    body: JSON.stringify({ room_url: roomUrl }),
+    body: JSON.stringify({}),
   });
 
   const data = await req.json();

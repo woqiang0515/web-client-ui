@@ -11,7 +11,7 @@ Install deps and build the UI:
 mv env.example .env.development.local
 yarn 
 yarn run build
-
+yarn dev
 ```
 
 Navigate to https://localhost:5173
@@ -24,7 +24,11 @@ Name of your bot e.g. "Simple Chatbot" (shown in HTML and intro)
 
 `VITE_SERVER_URL`
 
-A server URL to trigger when starting a session (e.g. a Pipecat bot_runner) that instantiates a new agent at the specified room URL.  Note: If this is not set, the app will assume you will manually start your bot at the same room URL (and show a warning on the config screen in dev mode.)
+A server URL to trigger when starting a session (e.g. your Cerebrium function) that instantiates a new agent at the specified room URL.  Note: If this is not set, the app will assume you will manually start your bot at the same room URL (and show a warning on the config screen in dev mode.)
+
+`VITE_SERVER_AUTH`
+
+The JWT token that authenticates your request to your cerebrium endpoint
 
 `VITE_MANUAL_ROOM_ENTRY`
 
