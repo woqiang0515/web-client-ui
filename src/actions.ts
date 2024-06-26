@@ -15,7 +15,7 @@ export const fetch_start_agent = async (
   const data = await req.json();
 
   if (!req.ok) {
-    return { error: true, detail: data.detail };
+    return { error: true, detail: data.result, status: req.status };
   }
   return data;
 };

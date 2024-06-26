@@ -64,6 +64,8 @@ export default function App() {
   const [roomError, setRoomError] = useState<boolean>(
     (roomQs && checkRoomUrl(roomQs)) || false
   );
+  const [capacityError, setCapacityError] = useState<string>(""); // New state for start error
+
 
   function handleRoomUrl() {
     if ((autoRoomCreation && serverUrl) || checkRoomUrl(roomUrl)) {
@@ -86,7 +88,7 @@ export default function App() {
 
       try {
         data = await fetch_start_agent(`${serverUrl}create_room`, serverAuth);
-        if (data && !data.errror) {
+        if (data && !data.error) {
           fetch(`${serverUrl}start_bot`, {
             method: "POST",
             headers: {
@@ -100,17 +102,19 @@ export default function App() {
           }).catch((e) => {
             console.error(`Failed to make request to ${serverUrl}/main: ${e}`);
           });
-        }
-        if (data.error) {
-          if (data.error === "invalid-request-error" && data.info.includes("rooms reached")) {
-            setError("We are currently at capacity for this demo. Please try again later. Alternatively, you can create your own");
-          } else {
-            setError(data.detail);
+        } else  {
+          console.log(data)
+          if (data.status === 429) {
+            setCapacityError(`${data.detail.message}.`)
+            setState("configuring")
+            return
           }
+          setError(data.detail.message);
           setState("error");
           return;
         }
       } catch (e) {
+        console.log(e)
         setError(`Unable to connect to the bot server at '${serverUrl}'`);
         setState("error");
         return;
@@ -190,6 +194,11 @@ export default function App() {
             {status_text[state as keyof typeof status_text]}
           </Button>
         </CardFooter>
+        {capacityError && (
+          <div className="text-red-500 mt-2 p-4">
+            {capacityError}<br/> Alternatively you can create your own. Click <strong><u><a href="https://docs.cerebrium.ai/v4/examples/realtime-voice-agents">here</a></u></strong> to see how
+          </div>
+        )}
       </Card>
     );
   }
