@@ -102,7 +102,11 @@ export default function App() {
           });
         }
         if (data.error) {
-          setError(data.detail);
+          if (data.error === "invalid-request-error" && data.info.includes("rooms reached")) {
+            setError("We are currently at capacity for this demo. Please try again later. Alternatively, you can create your own");
+          } else {
+            setError(data.detail);
+          }
           setState("error");
           return;
         }
