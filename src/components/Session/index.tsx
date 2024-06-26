@@ -7,7 +7,7 @@ import {
   useDailyEvent,
   useMeetingState,
 } from "@daily-co/daily-react";
-import { LineChart, LogOut, Settings } from "lucide-react";
+import { LineChart, LogOut, Settings, Github } from "lucide-react";
 
 import StatsAggregator from "../../utils/stats_aggregator";
 import { DeviceSelect } from "../Setup";
@@ -189,6 +189,18 @@ export const Session = React.memo(
 
         <footer className="w-full flex flex-row mt-auto self-end md:w-auto">
           <div className="flex flex-row justify-between gap-3 w-full md:w-auto">
+          <Tooltip>
+              <TooltipContent>Go to GitHub repository</TooltipContent>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => window.open('https://github.com/CerebriumAI/examples/tree/master/18-realtime-voice-agent', '_blank')}
+                >
+                  <Github /> 
+                </Button>
+              </TooltipTrigger>
+            </Tooltip>
             <Tooltip>
               <TooltipContent>Show bot statistics panel</TooltipContent>
               <TooltipTrigger asChild>
