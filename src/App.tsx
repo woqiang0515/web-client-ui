@@ -104,7 +104,7 @@ export default function App() {
           });
         } else  {
           console.log(data)
-          if (data.status === 429) {
+          if (data.status === 429 || data.status === 502) {
             setCapacityError(`${data.detail.message}.`)
             setState("configuring")
             return
