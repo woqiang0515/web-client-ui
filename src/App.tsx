@@ -103,15 +103,11 @@ export default function App() {
             console.error(`Failed to make request to ${serverUrl}/main: ${e}`);
           });
         } else  {
-          console.log(data)
-          if (data.status === 429 || data.status === 502) {
-            setCapacityError(`${data.detail.message}.`)
-            setState("configuring")
-            return
-          }
-          setError(data.detail.message);
-          setState("error");
-          return;
+          setCapacityError("We are currently at capacity for this demo. Please try again later.")
+          setState("configuring")
+          return
+          // setError(data.detail.message);
+          // setState("error");
         }
       } catch (e) {
         console.log(e)
