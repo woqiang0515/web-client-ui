@@ -111,8 +111,10 @@ export default function App() {
         }
       } catch (e) {
         console.log(e)
-        setError(`Unable to connect to the bot server at '${serverUrl}'`);
-        setState("error");
+        setCapacityError("We are currently at capacity for this demo. Please try again later.")
+        setState("configuring")
+        // setError(`Unable to connect to the bot server at '${serverUrl}'`);
+        // setState("error");
         return;
       }
     }
