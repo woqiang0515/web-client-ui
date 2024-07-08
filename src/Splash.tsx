@@ -55,7 +55,8 @@ const Splash: React.FC<SplashProps> = ({ handleReady }) => {
           </p>
         </div>
 
-        <Button onClick={handleReady}>Try the demo</Button>
+        {/* TODO: Uncomment this line to implement yourself */}
+        <Button disabled={true} onClick={handleReady}>Demo No Longer Available</Button>
 
         <div className="h-[1px] bg-primary-300 w-full" />
 
